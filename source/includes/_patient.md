@@ -748,6 +748,7 @@ The DocumentReference resource is used to describe a document that is made avail
 | description | The description of the documentreference | [string](https://www.hl7.org/fhir/datatypes.html#string) |
 | content.attachment.contentType | The mimetype of the content.| [Code](https://www.hl7.org/fhir/datatypes.html#code) |
 | content.attachment.title | The title of the document| [string](https://www.hl7.org/fhir/datatypes.html#string) |
+| extension | Contains the category of the document | [string](https://www.hl7.org/fhir/datatypes.html#string)  |
 
 ### Example
 <pre class="center-column">
@@ -770,6 +771,12 @@ The DocumentReference resource is used to describe a document that is made avail
         }
     ],
     "description": "Author: API user \r\n Note: A description of the document",
+	"extension": [
+        	{
+        		"url": "https://select.nextech-api.com/api/structuredefinition/note-category",
+        		"valueString": "Past Medical History"
+        	}
+        ],
     "content": [
         {
             "attachment": {				
@@ -785,7 +792,8 @@ The DocumentReference resource is used to describe a document that is made avail
 ### *Create*
 Creates the document in the content.attachment for a patient and attaches it to the patient's history tab in the Nextech software.  
 
-_Requires version 12.7_
+_DocumentReference requires version 12.7_
+_Extension for category requires version 12.8_
 
 #### HTTP Request 
 `POST /Patient/{patientUid}/DocumentReference` 
@@ -806,6 +814,12 @@ _Requires version 12.7_
 | content.attachment.contentType | The mimetype of the document. See Allowed Mimetypes below | Yes |
 | content.attachment.data | The base64 data of the document | Yes |
 | content.attachment.title | The title of the document, will be used as the filename| Yes |
+| extension | Allows setting category of the document | No |
+
+###Extension
+This is a custom extension to allow the setting of the category on the document.  This must match with an existing note category or is left blank.  There can only be one extension. 
+Url: https://select.nextech-api.com/api/structuredefinition/note-category
+valueString: Name of Nextech note category
 
 #### Example: Attach a new document for a patient
 <pre class="center-column">
@@ -824,6 +838,12 @@ POST https://select.nextech-api.com/api/Patient/ad2085b5-b974-401d-bfcb-3b865109
     ],  
   "created": "2017-10-16T20:32:28.9692476Z",
   "description": "A description of the document",
+  "extension": [
+        	{
+        		"url": "https://select.nextech-api.com/api/structuredefinition/note-category",
+        		"valueString": "Past Medical History"
+        	}
+        ],
   "content": [
     {
       "attachment": {
